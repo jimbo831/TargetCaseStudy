@@ -1,7 +1,6 @@
 package com.johnbwhitejr.target.casestudy.controllers;
 
 import com.johnbwhitejr.target.casestudy.beans.CurrentPrice;
-import com.johnbwhitejr.target.casestudy.beans.Price;
 import com.johnbwhitejr.target.casestudy.beans.ProductDTO;
 import com.johnbwhitejr.target.casestudy.services.ProductService;
 import com.johnbwhitejr.target.casestudy.utils.RedskyClient;
@@ -31,25 +30,7 @@ public class ProductController {
     }
 
     @PutMapping("/products/{id}")
-    public ProductDTO updateProductPrice(@PathVariable("id") long id, @RequestBody double value,
-                                         @RequestBody String currencyCode) {
-        return new ProductDTO();
-    }
-
-    @PutMapping("testDb/{id}")
-    public String addPrice(@PathVariable("id") long id, @RequestBody CurrentPrice current_price) {
-        productService.addPriceToDb(id, current_price);
-        return "Success";
-    }
-
-    @GetMapping("testDb/{id}")
-    public Price getPrice(@PathVariable("id") long id) {
-        return productService.getPriceByProductId(id);
-    }
-
-    @GetMapping("testApi/{id}")
-    public ProductDTO getProductTest(@PathVariable("id") long id) {
-        ProductDTO toReturn = redskyClient.getProductById(id);
-        return toReturn;
+    public ProductDTO updateProduct(@PathVariable("id") long id, @RequestBody CurrentPrice current_price) {
+        return productService.updateProduct(id, current_price);
     }
 }

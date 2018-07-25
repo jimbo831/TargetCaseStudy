@@ -6,6 +6,7 @@ import com.johnbwhitejr.target.casestudy.repositories.PriceRepository;
 import com.johnbwhitejr.target.casestudy.utils.RedskyClient;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,6 +22,8 @@ import java.util.Optional;
 public class ProductServiceImplTest {
 
     private final long id = 12345;
+    private ProductDTO product;
+    private Price price;
 
     @InjectMocks
     private ProductServiceImpl productService;
@@ -31,17 +34,23 @@ public class ProductServiceImplTest {
     @Mock
     private PriceRepository priceRepository;
 
-    @Test
-    public void testGetPriceByProductId() {
-        Price price = new Price();
+    @Before
+    public void setup() {
+        product = new ProductDTO();
+        price = new Price();
+        product.setCurrent_price(price.getCurrent_price());
         Mockito.when(priceRepository.findById(id)).thenReturn(Optional.of(price));
-        Assert.assertEquals(productService.getPriceByProductId(id), price);
+        Mockito.when(redskyClient.getProductById(id)).thenReturn(product);
     }
 
     @Test
-    public void testGetProductById() {
-        ProductDTO productDTO = new ProductDTO();
-        Mockito.when(redskyClient.getProductById(id)).thenReturn(productDTO);
-        Assert.assertEquals(productService.getProductById(id), productDTO);
+    public void testGetProduct() {
+        Assert.assertEquals(productService.getProduct(id), product);
+    }
+
+    @Test
+    public void testUpdateProduct() {
+        Assert.assertEquals(productService.updateProduct(id, price.getCurrent_price()), product);
+        Mockito.verify(priceRepository, Mockito.times(1)).save(Mockito.any(Price.class));
     }
 }
