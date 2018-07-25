@@ -2,6 +2,7 @@ package com.johnbwhitejr.target.casestudy.services;
 
 import com.johnbwhitejr.target.casestudy.beans.CurrentPrice;
 import com.johnbwhitejr.target.casestudy.beans.Price;
+import com.johnbwhitejr.target.casestudy.beans.Product;
 import com.johnbwhitejr.target.casestudy.beans.ProductDTO;
 import com.johnbwhitejr.target.casestudy.repositories.PriceRepository;
 import com.johnbwhitejr.target.casestudy.utils.RedskyClient;
@@ -19,6 +20,13 @@ public class ProductServiceImpl implements  ProductService {
     ProductServiceImpl(PriceRepository priceRepository, RedskyClient redskyClient) {
         this.priceRepository = priceRepository;
         this.redskyClient = redskyClient;
+    }
+
+    public ProductDTO getProduct(long id) {
+        ProductDTO product = redskyClient.getProductById(id);
+        CurrentPrice current_price = priceRepository.findById(id).get().getCurrent_price();
+        product.setCurrent_price(current_price);
+        return product;
     }
 
     public Price getPriceByProductId(long id) {

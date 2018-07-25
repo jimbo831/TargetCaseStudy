@@ -6,6 +6,7 @@ import com.johnbwhitejr.target.casestudy.beans.ProductDTO;
 
 public interface ProductService {
 
+    ProductDTO getProduct(long id);
     Price getPriceByProductId(long id);
     void addPriceToDb(long id, CurrentPrice currentPrice);
     ProductDTO getProductById(long id);
