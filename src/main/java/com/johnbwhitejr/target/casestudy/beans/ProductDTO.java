@@ -1,35 +1,39 @@
 package com.johnbwhitejr.target.casestudy.beans;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+// ProductDTO representation for this application endpoint
+public class ProductDTO {
 
-// Price document in Mongoose DB
-@Document(collection = "prices")
-public class Price {
-
-    @Id
     private long id;
+    private String name;
     private CurrentPrice current_price;
 
-    public Price () {
+    public ProductDTO() {
 
     }
 
-    public Price (long id, CurrentPrice current_price) {
+    public ProductDTO(long id, String name) {
         this.id = id;
-        this.current_price = current_price;
+        this.name = name;
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public CurrentPrice getCurrent_price() {
-        return current_price;
+        return this.current_price;
     }
 
     public void setCurrent_price(CurrentPrice current_price) {
