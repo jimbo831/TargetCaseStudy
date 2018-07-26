@@ -7,6 +7,7 @@ import com.johnbwhitejr.target.casestudy.exceptions.RedskyException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Component
@@ -21,7 +22,13 @@ public class RedskyClient {
     public ProductDTO getProductById(long id) throws RedskyException {
         String url = redskyBaseUrl + id + redskyUrlParams;
         RestTemplate restTemplate = new RestTemplate();
-        RedskyResponse redskyResponse = restTemplate.getForObject(url, RedskyResponse.class);
+        RedskyResponse redskyResponse = null;
+        try {
+            redskyResponse = restTemplate.getForObject(url, RedskyResponse.class);
+        }
+        catch (HttpClientErrorException e) {
+            throw new RedskyException("Unable to get product info from Redsky");
+        }
         if (redskyResponse == null) {
             throw new RedskyException("Unable to get product info from Redsky");
         }
